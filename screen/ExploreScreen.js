@@ -1,14 +1,17 @@
+/* eslint-disable no-alert */
 import React from 'react';
-import {View, Text, StyleSheet, Button} from 'react-native';
+import {View, Text, Button, StyleSheet} from 'react-native';
 
-const ExploreScreen = ({navigation}) => {
+const ExploreScreen = () => {
   return (
     <View style={styles.container}>
-      <Text>Explore Screen </Text>
-      <Button title="explore" onPress={() => {}} />
+      <Text>ExploreScreen</Text>
+      <Button title="Click Here" onPress={() => alert('Button Clicked!')} />
     </View>
   );
 };
+
+export default ExploreScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -17,5 +20,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-export default ExploreScreen;
