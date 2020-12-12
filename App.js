@@ -1,73 +1,87 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {View, Text, StyleSheet, Button} from 'react-native';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
-const HomeScreen = ({navigation}) => {
-  return (
-    <View style={styles.homeScreenContainer}>
-      <Text>Home Screen</Text>
-      <Button
-        title="Go to detials screen"
-        onPress={() => navigation.navigate('Details')}
-      />
-    </View>
-  );
-};
+import HomeScreen from './screen/HomeScreen';
+import DetailsScreen from './screen/DetailsScreen';
 
-const DetailsScreen = ({navigation}) => {
-  return (
-    <View style={styles.homeScreenContainer}>
-      <Text>Details Screen</Text>
-      <Button
-        title="Go to detials screen...again"
-        onPress={() => navigation.push('Details')}
-      />
-      <Button
-        title="Go to Home screen"
-        onPress={() => navigation.navigate('Home')}
-      />
-      <Button title="Go to Back" onPress={() => navigation.goBack()} />
-      <Button
-        title="Go to the first screen"
-        onPress={() => navigation.popToTop()}
-      />
-    </View>
-  );
-};
+const HomeStack = createStackNavigator();
+const DetailsStack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
-const Stack = createStackNavigator();
+const HomeStackScreen = ({navigation}) => (
+  <HomeStack.Navigator
+    screenOptions={{
+      headerStyle: {
+        backgroundColor: '#009387',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    }}>
+    <HomeStack.Screen
+      name="Home"
+      component={HomeScreen}
+      options={{
+        title: 'Overview',
+        headerLeft: () => (
+          <IonIcon.Button
+            name="ios-menu"
+            backgroundColor="#009387"
+            size={25}
+            onPress={() => {
+              navigation.openDrawer();
+            }}
+          />
+        ),
+      }}
+    />
+  </HomeStack.Navigator>
+);
+
+const DetaislStackScreen = ({navigation}) => (
+  <DetailsStack.Navigator
+    screenOptions={{
+      headerStyle: {
+        backgroundColor: '#009387',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    }}>
+    <DetailsStack.Screen
+      name="Details"
+      component={DetailsScreen}
+      options={{
+        headerLeft: () => (
+          <IonIcon.Button
+            name="ios-menu"
+            backgroundColor="#009387"
+            size={25}
+            onPress={() => {
+              navigation.openDrawer();
+            }}
+          />
+        ),
+      }}
+    />
+  </DetailsStack.Navigator>
+);
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: '#009387',
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}>
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{title: 'Overview'}}
-        />
-        <Stack.Screen name="Details" component={DetailsScreen} />
-      </Stack.Navigator>
+      <Drawer.Navigator initialRouteName="Home">
+        <Drawer.Screen name="Home" component={HomeStackScreen} />
+        <Drawer.Screen name="Details" component={DetaislStackScreen} />
+      </Drawer.Navigator>
+      {/* */}
     </NavigationContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  homeScreenContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default App;
