@@ -26,7 +26,7 @@ export function DrawerContent(props) {
           <View style={styles.userInfoSection}>
             <View style={{flexDirection: 'row', marginTop: 15}}>
               <Avatar.Image
-                source={require('../asset/img/samba.png')}
+                source={require('../assets/img/samba.png')}
                 size={50}
               />
               <View style={{marginLeft: 15, flexDirection: 'column'}}>
