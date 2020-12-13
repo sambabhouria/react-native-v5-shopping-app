@@ -1,3 +1,4 @@
+/* eslint-disable react/self-closing-comp */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {
@@ -19,6 +20,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 
+import {AuthContext} from '../components/context';
+
 const SignInScreen = ({navigation}) => {
   const [data, setData] = React.useState({
     username: '',
@@ -29,6 +32,8 @@ const SignInScreen = ({navigation}) => {
     isValidUser: true,
     isValidPassword: true,
   });
+
+  const {signIn} = React.useContext(AuthContext);
 
   const textInputChange = (text) => {
     if (text.length !== 0) {
@@ -111,12 +116,11 @@ const SignInScreen = ({navigation}) => {
             )}
           </TouchableOpacity>
         </View>
+        <TouchableOpacity>
+          <Text tyle={{color: '#009387', marginTop: 15}} Forget password></Text>
+        </TouchableOpacity>
         <View style={styles.button}>
-          <TouchableOpacity
-            style={styles.signIn}
-            onPress={() => {
-              loginHandle(data.username, data.password);
-            }}>
+          <TouchableOpacity style={styles.signIn} onPress={() => signIn()}>
             <LinearGradient
               colors={['#08d4c4', '#01ab9d']}
               style={styles.signIn}>
