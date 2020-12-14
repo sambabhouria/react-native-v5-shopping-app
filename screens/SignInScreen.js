@@ -74,7 +74,9 @@ const SignInScreen = ({navigation}) => {
     });
   };
 
-  const loginHandle = (userName, password) => {};
+  const loginHandle = (userName, password) => {
+    signIn(userName, password);
+  };
 
   return (
     <View style={styles.container}>
@@ -120,7 +122,9 @@ const SignInScreen = ({navigation}) => {
           <Text tyle={{color: '#009387', marginTop: 15}} Forget password></Text>
         </TouchableOpacity>
         <View style={styles.button}>
-          <TouchableOpacity style={styles.signIn} onPress={() => signIn()}>
+          <TouchableOpacity
+            style={styles.signIn}
+            onPress={() => loginHandle(data.email, data.password)}>
             <LinearGradient
               colors={['#08d4c4', '#01ab9d']}
               style={styles.signIn}>
