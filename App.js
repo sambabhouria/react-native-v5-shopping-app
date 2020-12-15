@@ -68,20 +68,22 @@ const App = () => {
 
   const authContext = useMemo(
     () => ({
-      signIn: async (email, password) => {
+      signIn: async (foundUser) => {
         // setUserToken('@samba');
         // setIsLoading(false);
-        let userToken = null;
-        userToken = null;
-        if (email === 'sambabhouria@gmail.com' && password === 'bhouria') {
-          try {
-            // in the real apps token will be fethc from the data base
-            userToken = '@samba';
-            await AsyncStorage.setItem('userToken', userToken);
-          } catch (e) {
-            console.log(e);
-          }
+        // let userToken = null;
+        // userToken = null;
+        const userToken = String(foundUser[0].userToken);
+        const email = foundUser[0].email;
+        // if (email === 'sambabhouria@gmail.com' && password === 'bhouria') {
+        try {
+          // in the real apps token will be fethc from the data base
+          // userToken = '@samba';
+          await AsyncStorage.setItem('userToken', userToken);
+        } catch (e) {
+          console.log(e);
         }
+        //}
         dispatch({type: 'LOGIN', id: email, token: userToken});
       },
       signOut: async () => {
