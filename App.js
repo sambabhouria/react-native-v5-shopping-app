@@ -1,6 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect, useMemo, useReducer} from 'react';
+/***
+ * SHOPPING CART EXAMPLE
+ *
+ * https://blog.crowdbotics.com/use-redux-hooks-in-react-native-app/
+ */
+import React, {useEffect, useMemo} from 'react';
 import {View, ActivityIndicator} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {AuthContext} from './components/context';
@@ -14,57 +20,60 @@ import BookmarkScreen from './screens/BookmarkScreen';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import DrawerContent from './screens/DrawerContent';
-
 const Drawer = createDrawerNavigator();
 
 const App = () => {
+  const dispatch = useDispatch();
+  const {
+    userReducer: {isLoading, userToken},
+  } = useSelector((state) => state);
   // const [isLoading, setIsLoading] = useState(true);
   // const [userToken, setUserToken] = useState(null);
 
   // Here we create ou reducer for the login
 
   //1 First initial state
-  const initialLoginState = {
-    isLoading: true,
-    email: null,
-    userToken: null,
-  };
+  // const initialLoginState = {
+  //   isLoading: true,
+  //   email: null,
+  //   userToken: null,
+  // };
 
   // 2 creating the reducer  login function
-  const loginReducer = (prevState, action) => {
-    switch (action.type) {
-      case 'RETRIEVE_TOKEN':
-        return {
-          ...prevState,
-          userToken: action.token,
-          isLoading: false,
-        };
-      case 'LOGIN':
-        return {
-          ...prevState,
-          email: action.id,
-          userToken: action.token,
-          isLoading: false,
-        };
-      case 'LOGOUT':
-        return {
-          ...prevState,
-          email: null,
-          userToken: null,
-          isLoading: false,
-        };
-      case 'REGISTER':
-        return {
-          ...prevState,
-          email: action.id,
-          userToken: action.token,
-          isLoading: false,
-        };
-    }
-  };
+  // const loginReducer = (prevState, action) => {
+  //   switch (action.type) {
+  //     case 'RETRIEVE_TOKEN':
+  //       return {
+  //         ...prevState,
+  //         userToken: action.token,
+  //         isLoading: false,
+  //       };
+  //     case 'LOGIN':
+  //       return {
+  //         ...prevState,
+  //         email: action.id,
+  //         userToken: action.token,
+  //         isLoading: false,
+  //       };
+  //     case 'LOGOUT':
+  //       return {
+  //         ...prevState,
+  //         email: null,
+  //         userToken: null,
+  //         isLoading: false,
+  //       };
+  //     case 'REGISTER':
+  //       return {
+  //         ...prevState,
+  //         email: action.id,
+  //         userToken: action.token,
+  //         isLoading: false,
+  //       };
+  //   }
+  // };
 
   // 3 => calling the reducer login
-  const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
+  // const [loginState, dispatch] = useReducer(loginReducer, initialLoginState);
 
   const authContext = useMemo(
     () => ({
@@ -102,7 +111,7 @@ const App = () => {
         //setIsLoading(false);
       },
     }),
-    [],
+    [dispatch],
   );
 
   // juste for simulate loginn after 2 seconde
@@ -120,9 +129,9 @@ const App = () => {
       // console.log('user token', userToken);
       dispatch({type: 'REGISTER', token: userToken});
     }, 1000);
-  }, []);
+  }, [dispatch]);
 
-  if (loginState.isLoading) {
+  if (isLoading) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size="large" />
@@ -132,7 +141,7 @@ const App = () => {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        {loginState.userToken !== null ? (
+        {userToken !== null ? (
           <Drawer.Navigator
             drawerContent={(props) => <DrawerContent {...props} />}>
             <Drawer.Screen name="HomeDrawer" component={MainTabScreen} />
